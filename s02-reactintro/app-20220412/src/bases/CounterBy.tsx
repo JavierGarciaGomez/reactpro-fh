@@ -26,7 +26,7 @@ export const CounterBy = ({ initialValue = 0 }: Props) => {
   return (
     <>
       <p>
-        Counter {counter}. With{clicks}
+        Counter {counter}. With {clicks} clicks
       </p>
       <p>Counter {counter}</p>
       <button

@@ -1,14 +1,37 @@
 import React, { useReducer, useState } from "react";
 
-interface ActionType {
-  type: "increment";
-}
+type CounterState = {
+  counter: number;
+  previous: number;
+  changes: number;
+};
 
-const counterReducer = (state: { counter: number }, action: ActionType) => {
+const INITIAL_STATE = {
+  counter: 0,
+  previous: 0,
+  changes: 0,
+};
+type ActionType =
+  | {
+      type: "increaseBy";
+      payload: { value: number };
+    }
+  | {
+      type: "reset";
+    };
+
+const counterReducer = (state: CounterState, action: ActionType): CounterState => {
+  console.log(state);
   switch (action.type) {
-    case "increment":
-      return { ...state, counter: state.counter + 1 };
-      break;
+    case "increaseBy":
+      return {
+        changes: state.changes + 1,
+        counter: state.counter + action.payload.value,
+        previous: state.counter,
+      };
+
+    case "reset":
+      return { counter: 0, previous: 0, changes: 0 };
 
     default:
       return state;
@@ -16,18 +39,25 @@ const counterReducer = (state: { counter: number }, action: ActionType) => {
 };
 
 export const CounterReducerComponent = () => {
-  const [counter, setCounter] = useState(0);
+  const [state, dispatch] = useReducer(counterReducer, INITIAL_STATE);
+  const { counter: counterRed, changes, previous } = state;
 
-  const [state, dispatch] = useReducer(counterReducer, { counter: 0 });
-  const { counter: counterRed } = state;
-
-  const handleClick = () => {
-    dispatch({ type: "increment" });
+  const handleIncrease = (value: number = 1) => {
+    dispatch({ type: "increaseBy", payload: { value: value } });
+  };
+  const handleReset = () => {
+    dispatch({ type: "reset" });
   };
   return (
     <>
+      <pre>{JSON.stringify(state)}</pre>
       <p> Counter {counterRed}</p>
-      <button onClick={handleClick}>+1</button>
+      <p> Previous: {previous}</p>
+      <p> Changes: {changes}</p>
+      <button onClick={() => handleIncrease()}>+1</button>
+      <button onClick={() => handleIncrease(5)}>+5</button>
+      <button onClick={() => handleIncrease(5)}>+10</button>
+      <button onClick={handleReset}>Reset</button>
     </>
   );
 };

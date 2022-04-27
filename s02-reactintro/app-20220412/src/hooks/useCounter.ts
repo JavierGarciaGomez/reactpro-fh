@@ -13,6 +13,7 @@ export const useCounter = ({ maxCount = 1 }) => {
   };
 
   useLayoutEffect(() => {
+    console.warn("Este es el usrefcurrent de tl", tl.current, elementToAnimate.current);
     if (!elementToAnimate.current) return;
 
     tl.current

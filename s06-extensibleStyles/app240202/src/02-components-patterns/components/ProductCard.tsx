@@ -7,14 +7,31 @@ import { ProductContext } from "../contest/ProductContext";
 
 const { Provider } = ProductContext;
 
+export interface OnChangeArgs {
+  product: Product;
+  count: number;
+}
 export interface Props {
   product: Product;
   children?: ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  onChange?: (args: OnChangeArgs) => void;
+  value?: number;
 }
-export const ProductCard = ({ product, children, className, style }: Props) => {
-  const { counter, increaseBy } = useProduct();
+export const ProductCard = ({
+  product,
+  children,
+  className,
+  style,
+  onChange,
+  value,
+}: Props) => {
+  const { counter, increaseBy } = useProduct({
+    onChange,
+    product,
+    value: value,
+  });
 
   return (
     <Provider value={{ counter, increaseBy, product }}>

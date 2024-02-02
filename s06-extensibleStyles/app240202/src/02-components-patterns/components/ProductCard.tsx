@@ -10,13 +10,15 @@ const { Provider } = ProductContext;
 export interface Props {
   product: Product;
   children?: ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
 }
-export const ProductCard = ({ product, children }: Props) => {
+export const ProductCard = ({ product, children, className, style }: Props) => {
   const { counter, increaseBy } = useProduct();
 
   return (
     <Provider value={{ counter, increaseBy, product }}>
-      <div className={styles.productCard}>
+      <div className={`${styles.productCard} ${className}`} style={style}>
         {children}
         {/* <ProductImage imgSrc={product.img} />
         <ProductTitle title={product.title} />
